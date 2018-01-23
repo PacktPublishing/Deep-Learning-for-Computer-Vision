@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/i335713/Google Drive/book/code/new/chapter3/a_model.ckpt-10000"
+all_model_checkpoint_paths: "/Users/i335713/Google Drive/book/code/new/chapter3/a_model.ckpt-10000"
