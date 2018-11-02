@@ -7,10 +7,8 @@ work_dir = ''
 image_height, image_width = 150, 150
 train_dir = os.path.join(work_dir, 'train')
 test_dir = os.path.join(work_dir, 'test')
-no_classes = 2
-no_validation = 800
 epochs = 50
-batch_size = 32
+batch_size = 25
 no_train = 2000
 no_test = 800
 input_shape = (image_height, image_width, 3)
@@ -43,12 +41,15 @@ test_bottleneck_features = model.predict_generator(test_images, test_steps)
 train_labels = np.array([0] * int(no_train / 2) + [1] * int(no_train / 2))
 test_labels = np.array([0] * int(no_test / 2) + [1] * int(no_test / 2))
 
+assert train_bottleneck_features.shape[0] == train_labels.shape[0], "features and labels must have same shape"
+assert test_bottleneck_features.shape[0] == test_labels.shape[0], "features and labels must have same shape"
+
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape=train_bottleneck_features.shape[1:]))
 model.add(tf.keras.layers.Dense(1024, activation='relu'))
 model.add(tf.keras.layers.Dropout(0.3))
-model.add(tf.keras.layers.Dense(1, activation='softmax'))
-model.compile(loss=tf.keras.losses.categorical_crossentropy,
+model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+model.compile(loss=tf.keras.losses.binary_crossentropy,
               optimizer=tf.keras.optimizers.Adam(),
               metrics=['accuracy'])
 
